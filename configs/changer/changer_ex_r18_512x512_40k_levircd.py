@@ -3,7 +3,7 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
 ]
 
-crop_size = (512, 512)
+#crop_size = (512, 512)
 model = dict(
     backbone=dict(
         interaction_cfg=(
@@ -24,7 +24,7 @@ train_pipeline = [
     dict(type='MultiImgLoadImageFromFile'),
     dict(type='MultiImgLoadAnnotations'),
     dict(type='MultiImgRandomRotate', prob=0.5, degree=180),
-    dict(type='MultiImgRandomCrop', crop_size=crop_size),
+    #dict(type='MultiImgRandomCrop', crop_size=crop_size),
     dict(type='MultiImgRandomFlip', prob=0.5, direction='horizontal'),
     dict(type='MultiImgRandomFlip', prob=0.5, direction='vertical'),
     dict(type='MultiImgExchangeTime', prob=0.5),
@@ -42,12 +42,12 @@ test_pipeline = [
     dict(type='MultiImgLoadImageFromFile'),
     dict(
         type='MultiImgMultiScaleFlipAug',
-        img_scale=(754, 754),
+        #img_scale=(754, 754),
         # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
-            dict(type='MultiImgResize', keep_ratio=True),
-            dict(type='MultiImgRandomFlip'),
+            #dict(type='MultiImgResize', keep_ratio=True),
+            #dict(type='MultiImgRandomFlip'),
             dict(type='MultiImgNormalize', **img_norm_cfg),
             dict(type='MultiImgImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img']),
