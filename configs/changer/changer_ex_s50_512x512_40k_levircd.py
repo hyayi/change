@@ -13,7 +13,7 @@ model = dict(
             dict(type='ChannelExchange', p=1/2))
     ),
     decode_head=dict(
-        num_classes=3,
+        num_classes=2,
         sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000)),
         # test_cfg=dict(mode='slide', crop_size=crop_size, stride=(crop_size[0]//2, crop_size[1]//2)),
     )
@@ -58,19 +58,19 @@ data = dict(
     workers_per_gpu=4,
     train=dict(
         img_dir='train',
-        ann_dir='train/label',
+        ann_dir='train/labelA',
         pipeline=train_pipeline),
     val=dict(
         img_dir='val',
-        ann_dir='val/label',
+        ann_dir='val/labelA',
         pipeline=test_pipeline),
     test=dict(
         img_dir='val',
-        ann_dir='val/label',
+        ann_dir='val/labelA',
         pipeline=test_pipeline))
 
 log_config = dict(
-    interval=50,
+    interval=300,
     hooks=[
         dict(type='TextLoggerHook', by_epoch=False),
     ])
@@ -93,6 +93,7 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
-runner = dict(type='IterBasedRunner', max_iters=40000)
-checkpoint_config = dict(by_epoch=False, interval=4000)
-evaluation = dict(interval=50, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIou', greater_keys=['mIou'])
+runner = dict(type='IterBasedRunner', max_iters=30000)
+checkpoint_config = dict(by_epoch=False, interval=3000)
+evaluation = dict(interval=300, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIoU', greater_keys=['mIou'])
+load_from = '/home/lab/inseo/change/ChangerEx_s101-512x512_40k_levircd_20220710-082722'
