@@ -26,7 +26,8 @@ class IAEncoderDecoder(BaseSegmentor):
                  train_cfg=None,
                  test_cfg=None,
                  pretrained=None,
-                 init_cfg=None):
+                 init_cfg=None,
+                 ):
         super(IAEncoderDecoder, self).__init__(init_cfg)
         if pretrained is not None:
             assert backbone.get('pretrained') is None, \
@@ -40,6 +41,7 @@ class IAEncoderDecoder(BaseSegmentor):
 
         self.train_cfg = train_cfg
         self.test_cfg = test_cfg
+
 
         assert self.with_decode_head
 
@@ -74,7 +76,7 @@ class IAEncoderDecoder(BaseSegmentor):
         out = self._decode_head_forward_test(x, img_metas)
         out = resize(
             input=out,
-            size=img.shape[2:],
+            size=(img_metas[0]['ori_shape'][0],img_metas[0]['ori_shape'][1]*2),
             mode='bilinear',
             align_corners=self.align_corners)
         return out
@@ -188,7 +190,7 @@ class IAEncoderDecoder(BaseSegmentor):
         if rescale:
             preds = resize(
                 preds,
-                size=img_meta[0]['ori_shape'][:2],
+                size=(img_meta[0]['ori_shape'][0],img_meta[0]['ori_shape'][1]*2),
                 mode='bilinear',
                 align_corners=self.align_corners,
                 warning=False)
@@ -203,7 +205,8 @@ class IAEncoderDecoder(BaseSegmentor):
             if torch.onnx.is_in_onnx_export():
                 size = img.shape[2:]
             else:
-                size = img_meta[0]['ori_shape'][:2]
+                size = (img_meta[0]['ori_shape'][0],img_meta[0]['ori_shape'][1]*2)
+                #size = self.output_size
             seg_logit = resize(
                 seg_logit,
                 size=size,
