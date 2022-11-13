@@ -18,8 +18,8 @@ class LEVIR_CD_Dataset(CDDataset):
             sub_dir_2='B',
             img_suffix='.png',
             seg_map_suffix='.png',
-            classes=('background', 'newconstruction','extinction','renewal'),
-            palette=[[0, 0, 0], [1, 1, 1], [2, 2, 2], [3, 3, 3]],
+            classes=('background', 'newconstruction','renewal'),
+            palette=[[0, 0, 0], [1, 1, 1], [2, 2, 2]],
             **kwargs)
 
     def results2img(self, results, imgfile_prefix, indices=None):
