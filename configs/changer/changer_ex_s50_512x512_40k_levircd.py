@@ -13,7 +13,7 @@ model = dict(
             dict(type='ChannelExchange', p=1/2))
     ),
     decode_head=dict(
-        num_classes=4,
+        num_classes=3,
         sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000)),
         # test_cfg=dict(mode='slide', crop_size=crop_size, stride=(crop_size[0]//2, crop_size[1]//2)),
     )
@@ -24,7 +24,7 @@ train_pipeline = [
     dict(type='MultiImgLoadImageFromFile'),
     dict(type='MultiImgLoadAnnotations'),
     dict(type='MultiImgRandomRotate', prob=0.5, degree=180),
-    dict(type='MultiImgRandomCrop', crop_size=crop_size),
+    #dict(type='MultiImgRandomCrop', crop_size=crop_size),
     dict(type='MultiImgRandomFlip', prob=0.5, direction='horizontal'),
     dict(type='MultiImgRandomFlip', prob=0.5, direction='vertical'),
     dict(type='MultiImgExchangeTime', prob=0.5),
@@ -46,7 +46,7 @@ test_pipeline = [
         # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
-            dict(type='MultiImgResize', keep_ratio=True),
+            #dict(type='MultiImgResize', keep_ratio=True),
             dict(type='MultiImgRandomFlip'),
             dict(type='MultiImgNormalize', **img_norm_cfg),
             dict(type='MultiImgImageToTensor', keys=['img']),
@@ -54,7 +54,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=8,
+    samples_per_gpu=32,
     workers_per_gpu=4,
     train=dict(
         img_dir='train',
@@ -95,4 +95,4 @@ lr_config = dict(
 
 runner = dict(type='IterBasedRunner', max_iters=40000)
 checkpoint_config = dict(by_epoch=False, interval=4000)
-evaluation = dict(interval=4000, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='IoU.changed', greater_keys=['IoU'])
+evaluation = dict(interval=50, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIou', greater_keys=['mIou'])
