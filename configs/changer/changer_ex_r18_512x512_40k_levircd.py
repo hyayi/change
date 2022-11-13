@@ -42,7 +42,7 @@ test_pipeline = [
     dict(type='MultiImgLoadImageFromFile'),
     dict(
         type='MultiImgMultiScaleFlipAug',
-        img_scale=(754, 754),
+        img_scale=(754, 1508),
         # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
@@ -54,7 +54,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=8,
+    samples_per_gpu=32,
     workers_per_gpu=4,
     train=dict(
         img_dir='train',
@@ -94,6 +94,6 @@ lr_config = dict(
     by_epoch=False)
 
 runner = dict(type='IterBasedRunner', max_iters=60000)
-checkpoint_config = dict(by_epoch=False, interval=1200)
-evaluation = dict(interval=1200, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIoU', greater_keys=['mIoU'])
+checkpoint_config = dict(by_epoch=False, interval=3000)
+evaluation = dict(interval=300, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIoU', greater_keys=['mIoU'])
                                                                                                                                                                                                                                                    
