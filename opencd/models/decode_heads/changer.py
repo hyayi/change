@@ -192,6 +192,14 @@ class Changer(BaseDecodeHead):
             ffn_drop=0.,
             dropout_layer=dict(type='DropPath', drop_prob=0.),
             act_cfg=dict(type='GELU'))
+        
+        
+        self.discriminator_B = MixFFN(
+            embed_dims=self.channels,
+            feedforward_channels=self.channels,
+            ffn_drop=0.,
+            dropout_layer=dict(type='DropPath', drop_prob=0.),
+            act_cfg=dict(type='GELU'))
                 
     def base_forward(self, inputs):
         outs = []
@@ -223,7 +231,10 @@ class Changer(BaseDecodeHead):
         out2 = self.base_forward(inputs2)
         out = self.neck_layer(out1, out2, 'concat')
 
-        out = self.discriminator(out)
+        out_A = self.discriminator(out)
+        out_B = self.discriminator_B(out)
+        
+        out = torch.cat([out_A, out_B], dim=-1)
         out = self.cls_seg(out)
 
         return out
