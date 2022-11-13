@@ -70,7 +70,7 @@ data = dict(
         pipeline=test_pipeline))
 
 log_config = dict(
-    interval=50,
+    interval=300,
     hooks=[
         dict(type='TextLoggerHook', by_epoch=False),
     ])
