@@ -231,10 +231,7 @@ class Changer(BaseDecodeHead):
         out2 = self.base_forward(inputs2)
         out = self.neck_layer(out1, out2, 'concat')
 
-        out_A = self.discriminator(out)
-        out_B = self.discriminator_B(out)
-        
-        out = torch.cat([out_A, out_B], dim=-1)
+        out = self.discriminator(out)
         out = self.cls_seg(out)
 
         return out
