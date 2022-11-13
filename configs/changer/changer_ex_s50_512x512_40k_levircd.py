@@ -54,7 +54,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=16,
+    samples_per_gpu=8,
     workers_per_gpu=8,
     train=dict(
         img_dir='train',
@@ -70,7 +70,7 @@ data = dict(
         pipeline=test_pipeline))
 
 log_config = dict(
-    interval=600,
+    interval=1200,
     hooks=[
         dict(type='TextLoggerHook', by_epoch=False),
     ])
@@ -93,7 +93,7 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
-runner = dict(type='IterBasedRunner', max_iters=60000)
-checkpoint_config = dict(by_epoch=False, interval=6000)
-evaluation = dict(interval=600, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIou', greater_keys=['mIou'])
+runner = dict(type='IterBasedRunner', max_iters=120000)
+checkpoint_config = dict(by_epoch=False, interval=12000)
+evaluation = dict(interval=1200, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIou', greater_keys=['mIou'])
 load_from = '/home/lab/inseo/change/ChangerEx_s50-512x512_40k_levircd_20220702-145628.pth'
