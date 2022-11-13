@@ -95,5 +95,5 @@ lr_config = dict(
 
 runner = dict(type='IterBasedRunner', max_iters=240000)
 checkpoint_config = dict(by_epoch=False, interval=24000)
-evaluation = dict(interval=2400, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIou', greater_keys=['mIou'])
+evaluation = dict(interval=2400, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIou', greater_keys=['mIoU'])
 load_from = '/home/lab/inseo/change/ChangerEx_s50-512x512_40k_levircd_20220702-145628.pth'
