@@ -54,8 +54,8 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=32,
-    workers_per_gpu=4,
+    samples_per_gpu=16,
+    workers_per_gpu=8,
     train=dict(
         img_dir='train',
         ann_dir='train/label2',
@@ -70,7 +70,7 @@ data = dict(
         pipeline=test_pipeline))
 
 log_config = dict(
-    interval=300,
+    interval=600,
     hooks=[
         dict(type='TextLoggerHook', by_epoch=False),
     ])
@@ -94,6 +94,6 @@ lr_config = dict(
     by_epoch=False)
 
 runner = dict(type='IterBasedRunner', max_iters=60000)
-checkpoint_config = dict(by_epoch=False, interval=3000)
-evaluation = dict(interval=300, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIoU', greater_keys=['mIoU'])
+checkpoint_config = dict(by_epoch=False, interval=6000)
+evaluation = dict(interval=600, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIoU', greater_keys=['mIoU'])
                                                                                                                                                                                                                                                    
