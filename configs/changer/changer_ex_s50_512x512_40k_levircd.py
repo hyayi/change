@@ -3,7 +3,7 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
 ]
 
-crop_size = (512, 512)
+#crop_size = (512, 512)
 model = dict(
     backbone=dict(
         interaction_cfg=(
@@ -13,7 +13,7 @@ model = dict(
             dict(type='ChannelExchange', p=1/2))
     ),
     decode_head=dict(
-        num_classes=3,
+        num_classes=4,
         sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000)),
         # test_cfg=dict(mode='slide', crop_size=crop_size, stride=(crop_size[0]//2, crop_size[1]//2)),
     )
@@ -42,12 +42,12 @@ test_pipeline = [
     dict(type='MultiImgLoadImageFromFile'),
     dict(
         type='MultiImgMultiScaleFlipAug',
-        img_scale=(754, 754),
+        img_scale=(754, 1508),
         # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
             #dict(type='MultiImgResize', keep_ratio=True),
-            dict(type='MultiImgRandomFlip'),
+            #dict(type='MultiImgRandomFlip'),
             dict(type='MultiImgNormalize', **img_norm_cfg),
             dict(type='MultiImgImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img']),
@@ -70,7 +70,7 @@ data = dict(
         pipeline=test_pipeline))
 
 log_config = dict(
-    interval=50,
+    interval=300,
     hooks=[
         dict(type='TextLoggerHook', by_epoch=False),
     ])
@@ -93,6 +93,7 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
-runner = dict(type='IterBasedRunner', max_iters=40000)
-checkpoint_config = dict(by_epoch=False, interval=4000)
-evaluation = dict(interval=50, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIou', greater_keys=['mIou'])
+runner = dict(type='IterBasedRunner', max_iters=60000)
+checkpoint_config = dict(by_epoch=False, interval=3000)
+evaluation = dict(interval=300, metric=['mFscore', 'mIoU'], pre_eval=True, save_best='mIou', greater_keys=['mIou'])
+load_from = '/home/lab/inseo/change/ChangerEx_s50-512x512_40k_levircd_20220702-145628.pth'
